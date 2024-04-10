@@ -78,7 +78,7 @@ class SpreadsheetManipulation:
 
                         common_time = min_end - max_start
                         if common_time >= 120:
-
+                            return True
         return False 
 
     
