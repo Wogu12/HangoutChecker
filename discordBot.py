@@ -1,19 +1,22 @@
+import sys
 import discord
 import os
+import json
 from discord.ext import commands
 from dotenv import load_dotenv
+from gSheetManipulate import SpreadsheetManipulation
+
 
 load_dotenv()
 DISCORD_TOKEN = os.getenv("DISCORD_TOKEN")
 GUILD = os.getenv('DISCORD_GUILD')
 CHANNEL = int(os.getenv('DISCORD_CHANNEL'))
 
-intents = discord.Intents.default()
-intents.message_content = True
+intents = discord.Intents.all()
+intents.messages = True
 intents.members = True
 
 bot = commands.Bot(command_prefix='?', intents=intents)
-# bot = discord.Client(intents=discord.Intents.default())
 
 @bot.event
 async def on_ready():
@@ -32,13 +35,19 @@ async def hello(message):
 
 @bot.command()
 async def test(ctx):
-    """Adds two numbers together."""
     await ctx.send("dziala")
 
 @bot.command()
 async def get_channel(ctx):
+    print('trying...')
     channel = discord.utils.get(ctx.guild.channels, name="wycinki-i-ciekawostki")
-    await channel.send("dziala")
+    searcher = SpreadsheetManipulation()
+
+    results = searcher.check_tomorrow()
+    for days in results:
+        result_string = '\n'.join(results)
+    print('end?')
+    await channel.send(result_string)
 
 
 bot.run(DISCORD_TOKEN)

@@ -8,4 +8,4 @@ temp/
 credentials.json
 .vscode/
 __pycache__
-HC/
+env/
